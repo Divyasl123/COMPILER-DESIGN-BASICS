@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_LEN 100
+#define NUM_KEYWORDS 8
+
+// List of keywords (can be extended)
+const char *keywords[NUM_KEYWORDS] = {"int", "float", "if", "else", "while", "return", "for", "char"};
+
+// Function to check if a word is a keyword
+int isKeyword(char *word) {
+    for (int i = 0; i < NUM_KEYWORDS; i++) {
+        if (strcmp(word, keywords[i]) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+// Function to check if a character is an operator
+int isOperator(char ch) {
+    char operators[] = "+-*/=<>!&|";
+    for (int i = 0; operators[i] != '\0'; i++) {
+        if (ch == operators[i])
+            return 1;
+    }
+    return 0;
+}
+
+int main() {
+    FILE *file;
+    char filename[MAX_LEN], ch, buffer[MAX_LEN];
+    int index = 0;
+
+    // Get file name from user
+    printf("Enter the file name: ");
+    scanf("%s", filename);
+
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+
+    printf("\nTokens:\n");
+
+    while ((ch = fgetc(file)) != EOF) {
+        // If the character is a separator (space, newline, punctuation)
+        if (isspace(ch) || ispunct(ch)) {
+            if (index != 0) {  // If buffer has
